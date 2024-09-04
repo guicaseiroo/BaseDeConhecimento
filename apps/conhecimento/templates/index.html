@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block page_title %}
+  Página Inicial
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xl-12 col-sm-12">
+      <div class="card">
+        <div class="card-datatable pt-0">
+          <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+            <!-- Cabeçalho da tabela -->
+            <div class="card-header flex-column flex-md-row">
+              <div class="head-label text-center">
+                <h5 class="card-title mb-0">Tópicos Cadastrados</h5>
+              </div>
+            </div>
+            <!-- Tabela -->
+            <table id="meuModeloTable" class="table dataTable no-footer dtr-column" style="width:100%">
+              <thead>
+                <tr>
+                  <th>Título</th>
+                  <th>Categorias</th>
+                  <th>Validade</th>
+                  <th>Usuário Criador</th>
+                  <th>Data de Criação</th>
+                  <th>Data de Atualização</th>
+                  <th>Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in items %}
+                  <tr>
+                    <td>{{ item.titulo }}</td>
+                    <td>{{ item.categorias }}</td>
+                    <td>{{ item.validade|date:'d/m/Y H:i' }}</td>
+                    <td>{{ item.usuario_criador }}</td>
+                    <td>{{ item.data_criacao|date:'d/m/Y H:i' }}</td>
+                    <td>{{ item.data_atualizacao|date:'d/m/Y H:i' }}</td>
+                    <td>
+                      <button class="btn btn-primary">Ver</button>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DataTables CDN -->
+  <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" /> -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $('#meuModeloTable').DataTable({
+        pageLength: 5, // Define o número de linhas por página
+        searching: true, // Ativa a busca
+        paging: true, // Ativa a paginação
+        info: true, // Mostra o número de entradas
+        language: {
+          lengthMenu: 'Mostrar _MENU_ registros por página',
+          zeroRecords: 'Nenhum registro encontrado',
+          info: 'Mostrando _PAGE_ de _PAGES_ páginas',
+          infoEmpty: 'Nenhum registro disponível',
+          infoFiltered: '(filtrado de _MAX_ registros totais)',
+          search: 'Pesquisar:',
+          paginate: {
+            first: 'Primeiro',
+            last: 'Último',
+            next: 'Próximo',
+            previous: 'Anterior'
+          },
+          loadingRecords: 'Carregando...',
+          processing: 'Processando...',
+          emptyTable: 'Nenhum dado disponível na tabela'
+        }
+      })
+    })
+  </script>
+{% endblock %}
