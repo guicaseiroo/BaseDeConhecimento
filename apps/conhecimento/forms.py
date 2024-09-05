@@ -1,6 +1,8 @@
 from django import forms
 from django.utils.safestring import mark_safe
+
 from .models import MeuModelo  # Substitua pelo nome correto do seu modelo
+
 
 class CKEditor5Widget(forms.Textarea):
     class Media:
@@ -10,7 +12,8 @@ class CKEditor5Widget(forms.Textarea):
     def render(self, name, value, attrs=None, renderer=None):
         # Renderiza o campo textarea padrão e insere o script do CKEditor 5 com configurações personalizadas
         text_area = super().render(name, value, attrs, renderer)
-        return mark_safe(f'''
+        return mark_safe(
+            f"""
             {text_area}
             <script>
                 ClassicEditor
@@ -63,10 +66,14 @@ class CKEditor5Widget(forms.Textarea):
                         console.error(error);
                     }});
             </script>
-        ''')
+        """
+        )
+
 
 class MeuModeloForm(forms.ModelForm):
-    texto = forms.CharField(widget=CKEditor5Widget())  # Substitua 'texto' pelo nome correto do campo no seu modelo
+    texto = forms.CharField(
+        widget=CKEditor5Widget()
+    )  # Substitua 'texto' pelo nome correto do campo no seu modelo
 
     class Meta:
         model = MeuModelo  # Substitua pelo nome correto do seu modelo

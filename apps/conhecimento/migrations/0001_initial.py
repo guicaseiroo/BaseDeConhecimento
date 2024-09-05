@@ -19,14 +19,44 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MeuModelo',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('titulo', models.CharField(max_length=255, verbose_name='Título')),
-                ('categorias', models.CharField(blank=True, max_length=150, verbose_name='Categoriais')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                (
+                    'titulo',
+                    models.CharField(max_length=255, verbose_name='Título'),
+                ),
+                (
+                    'categorias',
+                    models.CharField(
+                        blank=True, max_length=150, verbose_name='Categoriais'
+                    ),
+                ),
                 ('texto', ckeditor_uploader.fields.RichTextUploadingField()),
-                ('validade', models.DateTimeField(blank=True, null=True, validators=[conhecimento.models.validate_future_date], verbose_name='Validade da Publicação')),
+                (
+                    'validade',
+                    models.DateTimeField(
+                        blank=True,
+                        null=True,
+                        validators=[conhecimento.models.validate_future_date],
+                        verbose_name='Validade da Publicação',
+                    ),
+                ),
                 ('data_created', models.DateTimeField(auto_now_add=True)),
                 ('data_updated', models.DateTimeField(auto_now=True)),
-                ('usuario_criador', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    'usuario_criador',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]
