@@ -7,51 +7,56 @@
 {% endblock %}
 
 {% block content %}
-  <div class="row">
-    <div class="col-xl-12 col-sm-12">
+<div class="row">
+  <div class="col-xl-12 col-sm-12">
       <div class="card">
-        <div class="card-datatable pt-0">
-          <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
-            <!-- Cabeçalho da tabela -->
-            <div class="card-header flex-column flex-md-row">
-              <div class="head-label text-center">
-                <h5 class="card-title mb-0">Tópicos Cadastrados</h5>
+          <div class="card-datatable pt-0">
+              <!-- Cabeçalho da tabela -->
+              <div class="card-header flex-column flex-md-row">
+                  <div class="head-label text-center">
+                      <h5 class="card-title mb-0">Tópicos Cadastrados</h5>
+                  </div>
+                  <!-- Botão de novo item -->
+                  <div class="text-end">
+                      <a href="{% url 'create_meumodelo' %}" class="btn btn-success">
+                          Novo
+                      </a>
+                  </div>
               </div>
-            </div>
-            <!-- Tabela -->
-            <table id="meuModeloTable" class="table dataTable no-footer dtr-column" style="width:100%">
-              <thead>
-                <tr>
-                  <th>Título</th>
-                  <th>Categorias</th>
-                  <th>Validade</th>
-                  <th>Usuário Criador</th>
-                  <th>Data de Criação</th>
-                  <th>Data de Atualização</th>
-                  <th>Ação</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for item in items %}
-                  <tr>
-                    <td>{{ item.titulo }}</td>
-                    <td>{{ item.categorias }}</td>
-                    <td>{{ item.validade|date:'d/m/Y H:i' }}</td>
-                    <td>{{ item.usuario_criador }}</td>
-                    <td>{{ item.data_criacao|date:'d/m/Y H:i' }}</td>
-                    <td>{{ item.data_atualizacao|date:'d/m/Y H:i' }}</td>
-                    <td>
-                      <button class="btn btn-primary">Ver</button>
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+              <!-- Tabela -->
+              <table id="meuModeloTable" class="table dataTable no-footer dtr-column" style="width:100%">
+                  <thead>
+                      <tr>
+                          <th>Título</th>
+                          <th>Categorias</th>
+                          <th>Validade</th>
+                          <th>Usuário Criador</th>
+                          <th>Data de Criação</th>
+                          <th>Data de Atualização</th>
+                          <th>Ação</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {% for item in items %}
+                      <tr>
+                          <td>{{ item.titulo }}</td>
+                          <td>{{ item.categorias }}</td>
+                          <td>{{ item.validade|date:'d/m/Y H:i' }}</td>
+                          <td>{{ item.usuario_criador }}</td>
+                          <td>{{ item.data_created|date:'d/m/Y H:i' }}</td>
+                          <td>{{ item.data_updated|date:'d/m/Y H:i' }}</td>
+                          <td>
+                              <button class="btn btn-primary">Ver</button>
+                          </td>
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+              </table>
           </div>
-        </div>
       </div>
-    </div>
   </div>
+</div>
+
 
   <!-- DataTables CDN -->
   <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" /> -->

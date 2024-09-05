@@ -3,6 +3,9 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 from .models import MeuModelo
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .forms import MeuModeloForm
 
 
 @login_required
@@ -26,3 +29,16 @@ def data_ajax_url(request):
     )
 
     return JsonResponse({'data': data})
+
+def create_meumodelo(request):
+    if request.method == 'POST':
+        form = MeuModeloForm(request.POST)
+        if form.is_valid():
+            novo_item = form.save(commit=False)
+            novo_item.usuario_criador = request.user  # Definindo o criador como o usuário logado
+            novo_item.save()
+            return redirect('index')  # Redireciona para a página principal após criação
+    else:
+        form = MeuModeloForm()
+    return render(request, 'create_meumodelo.html', {'form': form})
+
