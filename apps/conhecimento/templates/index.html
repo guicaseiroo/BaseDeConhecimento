@@ -11,7 +11,6 @@
   <div class="col-xl-12 col-sm-12">
       <div class="card">
           <div class="card-datatable pt-0">
-              <!-- Cabeçalho da tabela -->
               <div class="card-header flex-column flex-md-row">
                   <div class="head-label text-center">
                       <h5 class="card-title mb-0">Tópicos Cadastrados</h5>
@@ -46,7 +45,13 @@
                           <td>{{ item.data_created|date:'d/m/Y H:i' }}</td>
                           <td>{{ item.data_updated|date:'d/m/Y H:i' }}</td>
                           <td>
-                              <button class="btn btn-primary">Ver</button>
+                              <!-- Botões de ação -->
+                              <a href="{% url 'view_meumodelo' item.id %}" class="btn btn-primary">Ver</a>
+                              <a href="{% url 'edit_meumodelo' item.id %}" class="btn btn-warning">Editar</a>
+                              <form action="{% url 'delete_meumodelo' item.id %}" method="POST" style="display:inline-block;">
+                                  {% csrf_token %}
+                                  <button type="submit" class="btn btn-danger">Excluir</button>
+                              </form>
                           </td>
                       </tr>
                       {% endfor %}
