@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+  Confirmar Exclusão
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xl-12 col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Excluir Tópico: {{ item.titulo }}</h5>
+          <p>Tem certeza que deseja excluir este tópico? Esta ação não pode ser desfeita.</p>
+          <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Excluir</button>
+            <a href="{% url 'index' %}" class="btn btn-secondary">Cancelar</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
