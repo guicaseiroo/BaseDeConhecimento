@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+  Detalhes do Tópico
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xl-12 col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Detalhes do Tópico</h5>
+          <p><strong>Título:</strong> {{ item.titulo }}</p>
+          <p><strong>Categorias:</strong> {{ item.categorias }}</p>
+          <p><strong>Validade:</strong> {{ item.validade|date:'d/m/Y H:i' }}</p>
+          <p><strong>Usuário Criador:</strong> {{ item.usuario_criador }}</p>
+          <p><strong>Data de Criação:</strong> {{ item.data_created|date:'d/m/Y H:i' }}</p>
+          <p><strong>Data de Atualização:</strong> {{ item.data_updated|date:'d/m/Y H:i' }}</p>
+          <a href="{% url 'index' %}" class="btn btn-secondary">Voltar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
