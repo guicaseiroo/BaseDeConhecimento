@@ -1,10 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import MeuModelo
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
 from .forms import MeuModeloForm
 
 
@@ -41,4 +39,33 @@ def create_meumodelo(request):
     else:
         form = MeuModeloForm()
     return render(request, 'create_meumodelo.html', {'form': form})
+
+@login_required
+def edit_meumodelo(request, pk):
+    meumodelo = get_object_or_404(MeuModelo, pk=pk)
+
+    if request.method == 'POST':
+        form = MeuModeloForm(request.POST, instance=meumodelo)
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+    else:
+        form = MeuModeloForm(instance=meumodelo)
+    
+    return render(request, 'edit_meumodelo.html', {'form': form, 'item': meumodelo})
+
+@login_required
+def delete_meumodelo(request, pk):
+    meumodelo = get_object_or_404(MeuModelo, pk=pk)
+
+    if request.method == "POST":
+        meumodelo.delete()
+        return redirect('index')
+
+    return render(request, 'delete_meumodelo_confirm.html', {'item': meumodelo})
+
+@login_required
+def view_meumodelo(request, pk):
+    meumodelo = get_object_or_404(MeuModelo, pk=pk)
+    return render(request, 'view_meumodelo.html', {'item': meumodelo})
 
