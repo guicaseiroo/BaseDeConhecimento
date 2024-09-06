@@ -3,6 +3,8 @@ from . import views
 
 urlpatterns = [
     path('', views.Index, name="index"),
-    path('data-ajax-url/', views.data_ajax_url, name='data_ajax_url'),
-    path('novo/', views.create_meumodelo, name='create_meumodelo'),  # Rota para criação de novo item
+    path('novo/', views.create_meumodelo, name='create_meumodelo'),
+    path('editar/<int:pk>/', views.edit_meumodelo, name='edit_meumodelo'),
+    path('excluir/<int:pk>/', views.delete_meumodelo, name='delete_meumodelo'),
+    path('ver/<int:pk>/', views.view_meumodelo, name='view_meumodelo'),  # Adiciona URL para visualização
 ]
