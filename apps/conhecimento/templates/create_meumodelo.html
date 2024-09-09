@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}  <!-- Carrega as tags do Crispy Forms -->
+
 {% block page_title %}
   Novo Tópico
 {% endblock %}
@@ -12,7 +14,7 @@
           <h5 class="card-title">Novo Tópico</h5>
           <form method="POST">
             {% csrf_token %}
-            {{ form.as_p }}  <!-- Renderiza o formulário, incluindo o CKEditor no campo 'texto' -->
+            {{ form|crispy }}  <!-- Usando Crispy Forms para renderizar o formulário -->
             <button type="submit" class="btn btn-success">Criar</button>
             <a href="{% url 'index' %}" class="btn btn-secondary">Cancelar</a>
           </form>
