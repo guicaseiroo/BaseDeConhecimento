@@ -3,7 +3,21 @@
   <li class="menu-item active">
     <a href="{% url 'index' %}" class="menu-link">
       <i class="menu-icon tf-icons ti ti-smart-home"></i>
-      <div data-i18n="Page 1">Pagina Inicial</div>
+      <div>Artigos</div>
+    </a>
+  </li>
+  {% if user.cargo == '1' %}
+  <li class="menu-item activ">
+    <a href="{% url 'index' %}" class="menu-link">
+      <i class="menu-icon tf-icons ti ti-smart-home"></i>
+      <div>Visão Admin</div>
+    </a>
+  </li>
+  {% endif %}
+  <li class="menu-item activ">
+    <a href="{% url 'index' %}" class="menu-link">
+      <i class="menu-icon tf-icons ti ti-smart-home"></i>
+      <div>Inteligência Artificial</div>
     </a>
   </li>
 </ul>

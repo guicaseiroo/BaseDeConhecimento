@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block page_title %}
+  Editar Texto
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-xl-12 col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Editar Texto</h5>
+          <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}  <!-- Usando Crispy Forms -->
+            <button type="submit" class="btn btn-warning">Salvar Texto</button>
+            <a href="{% url 'index' %}" class="btn btn-secondary">Cancelar</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#id_texto'))  // ID gerado pelo Django para o campo 'texto'
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+{% endblock %}

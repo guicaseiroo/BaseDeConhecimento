@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load crispy_forms_tags %}  <!-- Carrega as tags do Crispy Forms -->
+{% load crispy_forms_tags %}
 
 {% block page_title %}
   Novo Tópico
@@ -14,32 +14,105 @@
           <h5 class="card-title">Novo Tópico</h5>
           <form method="POST">
             {% csrf_token %}
-            {{ form|crispy }}  <!-- Usando Crispy Forms para renderizar o formulário -->
-            <button type="submit" class="btn btn-success">Criar</button>
+            {{ form.non_field_errors }}  <!-- Exibe erros de formulário -->
+            
+            {{ form.titulo|as_crispy_field }} <!-- Campo do título -->
+            {{ form.categorias|as_crispy_field }} <!-- Campo de categorias -->
+            {{ form.validade|as_crispy_field }} <!-- Campo de validade -->
+            <div id="editor">{{ form.texto|as_crispy_field }}</div>
+
+            <button type="submit" class="btn btn-success">Próximo: Editar Texto</button>
             <a href="{% url 'index' %}" class="btn btn-secondary">Cancelar</a>
           </form>
         </div>
       </div>
     </div>
   </div>
-{% endblock %}
 
-{% block extra_js %}
-<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
-<script>
-    // Aplicar o CKEditor ao campo 'texto'
+  <script type="importmap">
+    {
+        "imports": {
+            "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.1.0/ckeditor5.js",
+            "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.1.0/"
+        }
+    }
+</script>
+
+<script type="module">
+    import {
+        ClassicEditor,
+        Essentials,
+        Paragraph,
+        Bold,
+        Italic,
+        Font,
+        Underline,
+        Strikethrough,
+        BlockQuote,
+        Heading,
+        Link,
+        List,
+        Image,
+        ImageToolbar,
+        ImageCaption,
+        ImageStyle,
+        ImageResize,
+        Table,
+        TableToolbar,
+        MediaEmbed,
+        Code,
+        CodeBlock,
+        Highlight,
+        SimpleUploadAdapter
+    } from 'ckeditor5';
+
     ClassicEditor
-        .create(document.querySelector('#id_texto'), {  // O ID do campo gerado pelo Django é 'id_texto'
+        .create(document.querySelector('#editor'), {
+            plugins: [
+                Essentials, Paragraph, Bold, Italic, Font, Underline, Strikethrough, 
+                BlockQuote, Heading, Link, List, Image, ImageToolbar, ImageCaption, 
+                ImageStyle, ImageResize, Table, TableToolbar, MediaEmbed, Code, 
+                CodeBlock, Highlight, SimpleUploadAdapter
+            ],
             toolbar: [
-                'heading', '|', 'bold', 'italic', 'underline', 'strikethrough', 
-                'fontColor', 'fontBackgroundColor', 'fontSize', 'fontFamily', '|', 
-                'link', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable', 
-                'tableColumn', 'tableRow', 'mergeTableCells', '|', 'undo', 'redo', 
-                'alignment', 'imageUpload', 'mediaEmbed', 'horizontalLine', 'specialCharacters'
-            ]
+                'undo', 'redo', '|', 'heading', '|', 'bold', 'italic', 'underline', 'strikethrough', '|',
+                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', '|',
+                'link', 'blockquote', '|', 'bulletedList', 'numberedList', '|',
+                'insertTable', '|', 'imageUpload', 'mediaEmbed', '|', 'code', 'codeBlock', 'highlight'
+            ],
+            image: {
+                toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side', 'imageResize'],
+                upload: {
+                    types: ['png', 'jpeg', 'jpg', 'gif']
+                }
+            },
+            table: {
+                contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+            },
+            simpleUpload: {
+                // Aqui você define o endpoint para onde as imagens serão enviadas
+                uploadUrl: '/upload', // Endpoint do seu backend para upload de imagens
+                headers: {
+                    'X-CSRF-TOKEN': 'csrf-token', // Adicione tokens CSRF, se necessário
+                    Authorization: 'Bearer <token>' // Adicione um token de autorização, se aplicável
+                }
+            }
+        })
+        .then(editor => {
+            window.editor = editor;
         })
         .catch(error => {
             console.error(error);
         });
 </script>
+
+<!-- A friendly reminder to run on a server, remove this during the integration. -->
+<script>
+    window.onload = function() {
+        if (window.location.protocol === "file:") {
+            alert("This sample requires an HTTP server. Please serve this file with a web server.");
+        }
+    };
+</script>
+
 {% endblock %}
