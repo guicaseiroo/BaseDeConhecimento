@@ -46,7 +46,7 @@
                           <td>{{ item.data_updated|date:'d/m/Y H:i' }}</td>
                           <td>
                               <!-- Botões de ação -->
-                              <a href="{% url 'view_meumodelo' item.id %}" class="btn btn-primary">Ver</a>
+                              <a href="{% url 'ver_artigo' item.id %}" class="btn btn-primary">Ver</a>
                               <a href="{% url 'edit_meumodelo' item.id %}" class="btn btn-warning">Editar</a>
                               <form action="{% url 'delete_meumodelo' item.id %}" method="POST" style="display:inline-block;">
                                   {% csrf_token %}

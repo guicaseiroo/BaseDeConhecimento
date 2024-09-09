@@ -12,7 +12,7 @@
           <h5 class="card-title">Editar Tópico: {{ item.titulo }}</h5>
           <form method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ form.as_p }}  <!-- Renderiza o formulário, incluindo o CKEditor no campo 'texto' -->
             <button type="submit" class="btn btn-warning">Salvar Alterações</button>
             <a href="{% url 'index' %}" class="btn btn-secondary">Cancelar</a>
           </form>
@@ -20,4 +20,59 @@
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#id_texto'), {  // Certifique-se de que o ID do campo está correto
+            toolbar: [
+                'heading', '|', 'bold', 'italic', 'underline', 'strikethrough', 
+                'fontColor', 'fontBackgroundColor', 'fontSize', 'fontFamily', '|', 
+                'link', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable', 
+                'tableColumn', 'tableRow', 'mergeTableCells', '|', 'undo', 'redo', 
+                'alignment', 'imageUpload', 'mediaEmbed', 'horizontalLine', 'specialCharacters'
+            ],
+            image: {
+                toolbar: [ 'imageTextAlternative', 'imageStyle:full', 'imageStyle:side' ]
+            },
+            table: {
+                contentToolbar: [ 'tableColumn', 'tableRow', 'mergeTableCells' ]
+            },
+            mediaEmbed: {
+                previewsInData: true
+            },
+            height: 500,
+            link: {
+                decorators: {
+                    addTargetToExternalLinks: true
+                }
+            },
+            heading: {
+                options: [
+                    { model: "paragraph", title: "Paragraph", class: "ck-heading_paragraph" },
+                    { model: "heading1", view: "h1", title: "Heading 1", class: "ck-heading_heading1" },
+                    { model: "heading2", view: "h2", title: "Heading 2", class: "ck-heading_heading2" },
+                    { model: "heading3", view: "h3", title: "Heading 3", class: "ck-heading_heading3" }
+                ]
+            },
+            fontFamily: {
+                options: [
+                    'default', 'Arial, Helvetica, sans-serif', 'Courier New, Courier, monospace', 
+                    'Georgia, serif', 'Lucida Sans, Lucida Grande, sans-serif', 
+                    'Tahoma, sans-serif', 'Times New Roman, Times, serif', 'Verdana, Geneva, sans-serif'
+                ]
+            },
+            fontSize: {
+                options: [ 'tiny', 'small', 'default', 'big', 'huge' ]
+            },
+            alignment: {
+                options: [ 'left', 'center', 'right', 'justify' ]
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
 {% endblock %}

@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
 
 from .models import MeuModelo
 from .forms import MeuModeloForm
@@ -25,8 +26,8 @@ def data_ajax_url(request):
             'data_updated',
         )
     )
-
     return JsonResponse({'data': data})
+
 
 def create_meumodelo(request):
     if request.method == 'POST':
@@ -40,6 +41,7 @@ def create_meumodelo(request):
         form = MeuModeloForm()
     return render(request, 'create_meumodelo.html', {'form': form})
 
+
 @login_required
 def edit_meumodelo(request, pk):
     meumodelo = get_object_or_404(MeuModelo, pk=pk)
@@ -47,12 +49,13 @@ def edit_meumodelo(request, pk):
     if request.method == 'POST':
         form = MeuModeloForm(request.POST, instance=meumodelo)
         if form.is_valid():
-            form.save()
-            return redirect('index')
+            form.save()  # Salva o formulário, atualizando o item
+            return redirect('index')  # Redireciona para a página inicial após salvar
     else:
         form = MeuModeloForm(instance=meumodelo)
     
     return render(request, 'edit_meumodelo.html', {'form': form, 'item': meumodelo})
+
 
 @login_required
 def delete_meumodelo(request, pk):
@@ -64,8 +67,30 @@ def delete_meumodelo(request, pk):
 
     return render(request, 'delete_meumodelo_confirm.html', {'item': meumodelo})
 
+
 @login_required
 def view_meumodelo(request, pk):
     meumodelo = get_object_or_404(MeuModelo, pk=pk)
     return render(request, 'view_meumodelo.html', {'item': meumodelo})
 
+
+# Novas views para a visão de artigos
+
+def artigos(request):
+    # Renderiza a página principal de visualização dos artigos
+    artigos = MeuModelo.objects.all()
+    return render(request, 'artigos.html', {'artigos': artigos})
+
+
+def buscar_artigos(request):
+    query = request.GET.get('query', '')
+    artigos = MeuModelo.objects.filter(titulo__icontains=query) | MeuModelo.objects.filter(texto__icontains=query)
+    
+    html = render_to_string('partials/artigos_cards.html', {'artigos': artigos})
+    
+    return JsonResponse({'html': html})
+
+
+def ver_artigo(request, pk):
+    artigo = get_object_or_404(MeuModelo, pk=pk)
+    return render(request, 'ver_artigos.html', {'artigo': artigo})

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+  Artigos
+{% endblock %}
+
+{% block content %}
+  <div class="search-bar">
+    <input type="text" id="busca" name="busca" placeholder="Buscar artigos..." 
+           hx-get="{% url 'buscar_artigos' %}" hx-trigger="keyup changed delay:500ms" 
+           hx-target="#artigos-cards" hx-swap="innerHTML">
+  </div>
+
+  <div id="artigos-cards">
+    {% include 'partials/artigos_cards.html' %}
+  </div>
+{% endblock %}

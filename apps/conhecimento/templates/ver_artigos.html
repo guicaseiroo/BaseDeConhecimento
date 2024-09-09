@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+  {{ artigo.titulo }}
+{% endblock %}
+
+{% block content %}
+  <h1>{{ artigo.titulo }}</h1>
+
+  <p>{{ artigo.texto|safe }}</p>  <!-- Renderiza o texto completo com formatação do CKEditor -->
+
+  {% if artigo.validade %}
+    <p>Validade: {{ artigo.validade|date:'d/m/Y H:i' }}</p>
+  {% endif %}
+
+  <a href="{% url 'artigos' %}" class="btn btn-secondary">Voltar</a>
+{% endblock %}

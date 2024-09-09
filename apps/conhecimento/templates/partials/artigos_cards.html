@@ -1,0 +1,16 @@
+{% for artigo in artigos %}
+  <div class="artigo-card">
+    <h3>{{ artigo.titulo }}</h3>
+    <p>{{ artigo.texto|truncatewords:20 }}</p>  <!-- Mostra um trecho de até 20 palavras -->
+    
+    {% if artigo.validade %}
+      <p class="validade">Validade: {{ artigo.validade|date:'d/m/Y H:i' }}</p>
+    {% endif %}
+    
+    <a href="{% url 'ver_artigo' artigo.pk %}" class="btn btn-primary">Ver mais</a>
+  </div>
+{% endfor %}
+
+{% if not artigos %}
+  <p>Nenhum artigo encontrado.</p>
+{% endif %}

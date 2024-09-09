@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block page_title %}
-  Criar Novo Tópico
+  Novo Tópico
 {% endblock %}
 
 {% block content %}
@@ -12,7 +12,7 @@
           <h5 class="card-title">Novo Tópico</h5>
           <form method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ form.as_p }}  <!-- Renderiza o formulário, incluindo o CKEditor no campo 'texto' -->
             <button type="submit" class="btn btn-success">Criar</button>
             <a href="{% url 'index' %}" class="btn btn-secondary">Cancelar</a>
           </form>
@@ -20,4 +20,24 @@
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+<script>
+    // Aplicar o CKEditor ao campo 'texto'
+    ClassicEditor
+        .create(document.querySelector('#id_texto'), {  // O ID do campo gerado pelo Django é 'id_texto'
+            toolbar: [
+                'heading', '|', 'bold', 'italic', 'underline', 'strikethrough', 
+                'fontColor', 'fontBackgroundColor', 'fontSize', 'fontFamily', '|', 
+                'link', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable', 
+                'tableColumn', 'tableRow', 'mergeTableCells', '|', 'undo', 'redo', 
+                'alignment', 'imageUpload', 'mediaEmbed', 'horizontalLine', 'specialCharacters'
+            ]
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
 {% endblock %}
