@@ -1,5 +1,7 @@
 from django import forms
 from django.utils.safestring import mark_safe
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 
 from .models import MeuModelo  # Substitua pelo nome correto do seu modelo
 
@@ -76,5 +78,11 @@ class MeuModeloForm(forms.ModelForm):
     )  # Substitua 'texto' pelo nome correto do campo no seu modelo
 
     class Meta:
-        model = MeuModelo  # Substitua pelo nome correto do seu modelo
-        fields = '__all__'  # Inclua todos os campos do modelo
+        model = MeuModelo
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(MeuModeloForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Salvar Alterações'))

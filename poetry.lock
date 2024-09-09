@@ -103,6 +103,24 @@ files = [
 ]
 
 [[package]]
+name = "crispy-bootstrap5"
+version = "2024.2"
+description = "Bootstrap5 template pack for django-crispy-forms"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "crispy-bootstrap5-2024.2.tar.gz", hash = "sha256:7d1fa40c6faf472e30e85c72551a3d2c9eedbf0abfff920683315e4e6f670f2b"},
+    {file = "crispy_bootstrap5-2024.2-py3-none-any.whl", hash = "sha256:3867e320920a6ef156e94f9e0f06a80344c453e1b3bd96cd9dc0522ae9e9afb8"},
+]
+
+[package.dependencies]
+django = ">=4.2"
+django-crispy-forms = ">=2"
+
+[package.extras]
+test = ["pytest", "pytest-django"]
+
+[[package]]
 name = "django"
 version = "5.1.1"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
@@ -522,4 +540,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<4.0"
-content-hash = "19bebec78e0481bf8f05628bad0bf57bc0bb35954b7b64b779937aabd2e0ef4b"
+content-hash = "03ff7874ce80a3ec37229a8576feb49e235ae764f459c9bb7ff70cd0159ba6ac"
