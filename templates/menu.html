@@ -1,21 +1,25 @@
-
 <ul class="menu-inner py-1">
-  <li class="menu-item active">
-    <a href="{% url 'index' %}" class="menu-link">
+  <!-- Verifica se a URL atual é a dos artigos -->
+  <li class="menu-item {% if request.path == '/' %}active{% endif %}">
+    <a href="{% url 'artigos' %}" class="menu-link">
       <i class="menu-icon tf-icons ti ti-smart-home"></i>
       <div>Artigos</div>
     </a>
   </li>
+
   {% if user.cargo == '1' %}
-  <li class="menu-item activ">
-    <a href="{% url 'index' %}" class="menu-link">
+  <!-- Verifica se a URL atual é a da visão admin -->
+  <li class="menu-item {% if request.path == '/table-admin/' %}active{% endif %}">
+    <a href="{% url 'table_admin' %}" class="menu-link">
       <i class="menu-icon tf-icons ti ti-smart-home"></i>
       <div>Visão Admin</div>
     </a>
   </li>
   {% endif %}
-  <li class="menu-item activ">
-    <a href="{% url 'index' %}" class="menu-link">
+
+  <!-- Verifica se a URL atual é a da inteligência artificial -->
+  <li class="menu-item {% if request.path == '/inteligencia-artificial/' %}active{% endif %}">
+    <a href="{% url 'table_admin' %}" class="menu-link">
       <i class="menu-icon tf-icons ti ti-smart-home"></i>
       <div>Inteligência Artificial</div>
     </a>
