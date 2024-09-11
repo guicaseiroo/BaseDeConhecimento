@@ -16,7 +16,7 @@
             {% csrf_token %}
             {{ form|crispy }}  <!-- Usando Crispy Forms -->
             <button type="submit" class="btn btn-warning">Salvar Alterações</button>
-            <a href="{% url 'index' %}" class="btn btn-secondary">Cancelar</a>
+            <a href="{% url 'table_admin' %}" class="btn btn-secondary">Cancelar</a>
           </form>
         </div>
       </div>

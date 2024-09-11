@@ -7,27 +7,49 @@
 {% endblock %}
 
 {% block content %}
-  <div class="row">
+<div class="row">
     <div class="col-xl-12 col-sm-12">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Novo Tópico</h5>
-          <form method="POST">
-            {% csrf_token %}
-            {{ form.non_field_errors }}  <!-- Exibe erros de formulário -->
-            
-            {{ form.titulo|as_crispy_field }} <!-- Campo do título -->
-            {{ form.categorias|as_crispy_field }} <!-- Campo de categorias -->
-            {{ form.validade|as_crispy_field }} <!-- Campo de validade -->
-            <div id="editor">{{ form.texto|as_crispy_field }}</div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Novo Tópico</h5>
+                
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <!-- Exibe erros gerais do formulário -->
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <ul>
+                                {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
 
-            <button type="submit" class="btn btn-success">Próximo: Editar Texto</button>
-            <a href="{% url 'index' %}" class="btn btn-secondary">Cancelar</a>
-          </form>
+                    <!-- Exibe os campos do formulário com erros específicos -->
+                    {{ form.titulo.errors }}
+                    {{ form.titulo|as_crispy_field }}
+
+                    {{ form.categorias.errors }}
+                    {{ form.categorias|as_crispy_field }}
+
+                    {{ form.validade.errors }}
+                    {{ form.validade|as_crispy_field }}
+
+                    {{ form.texto.errors }}
+                    {{ form.texto.label_tag }}
+                    {{ form.texto }} <!-- CKEditor -->
+                    
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <a href="{% url 'table_admin' %}" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
+
+  
 
   <script type="importmap">
     {
@@ -67,7 +89,7 @@
     } from 'ckeditor5';
 
     ClassicEditor
-        .create(document.querySelector('#editor'), {
+        .create(document.querySelector('#id_texto'), {
             plugins: [
                 Essentials, Paragraph, Bold, Italic, Font, Underline, Strikethrough, 
                 BlockQuote, Heading, Link, List, Image, ImageToolbar, ImageCaption, 
@@ -90,11 +112,10 @@
                 contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
             },
             simpleUpload: {
-                // Aqui você define o endpoint para onde as imagens serão enviadas
-                uploadUrl: '/upload', // Endpoint do seu backend para upload de imagens
+                uploadUrl: '/upload',  // Ajuste para seu endpoint de upload
                 headers: {
-                    'X-CSRF-TOKEN': 'csrf-token', // Adicione tokens CSRF, se necessário
-                    Authorization: 'Bearer <token>' // Adicione um token de autorização, se aplicável
+                    'X-CSRF-TOKEN': document.querySelector('[name=csrfmiddlewaretoken]').value,  // Token CSRF
+                    Authorization: 'Bearer <token>'  // Ajuste se necessário
                 }
             }
         })
@@ -104,7 +125,15 @@
         .catch(error => {
             console.error(error);
         });
+
+    // Sincroniza o conteúdo do CKEditor com o textarea antes da submissão do formulário
+    document.querySelector('form').addEventListener('submit', function(event) {
+        if (window.editor) {
+            window.editor.updateSourceElement();  // Atualiza o textarea original com o conteúdo do CKEditor
+        }
+    });
 </script>
+
 
 <!-- A friendly reminder to run on a server, remove this during the integration. -->
 <script>

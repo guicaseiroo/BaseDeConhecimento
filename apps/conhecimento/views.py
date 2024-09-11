@@ -2,6 +2,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
+from django.contrib import messages  # Para exibir mensagens de erro/sucesso
+from django.db import IntegrityError  # Para capturar erros de integridade do banco de dados
+from django.core.exceptions import ValidationError  # Para capturar erros de validação
 
 from .forms import MeuModeloForm
 from .models import MeuModelo
@@ -33,19 +36,30 @@ def data_ajax_url(request):
 def create_meumodelo(request):
     if request.method == 'POST':
         form = MeuModeloForm(request.POST)
+        
         if form.is_valid():
-            # Salva os dados sem o campo de texto
-            novo_item = form.save(commit=False)
-            novo_item.usuario_criador = request.user
-            novo_item.save()
-            # Redireciona para a página de edição do texto
-            return redirect(
-                'edit_texto', pk=novo_item.pk
-            )  # Certifique-se que essa URL está correta
+            try:
+                # Salva os dados do formulário
+                novo_item = form.save(commit=False)
+                novo_item.usuario_criador = request.user
+                novo_item.save()
+
+                # Redireciona para a página 'table_admin' após o salvamento
+                return redirect('table_admin')
+            except Exception as e:
+                # Captura exceções inesperadas
+                print(f"Erro ao salvar o tópico: {e}")
+                messages.error(request, "Ocorreu um erro ao tentar salvar o tópico.")
+        else:
+            # Se o formulário não for válido, exibe os erros no terminal
+            print(f"Formulário inválido: {form.errors}")
+            messages.error(request, "Erro de validação. Por favor, corrija os erros abaixo.")
+    
     else:
         form = MeuModeloForm()
 
     return render(request, 'create_meumodelo.html', {'form': form})
+
 
 
 @login_required
@@ -73,7 +87,7 @@ def delete_meumodelo(request, pk):
 
     if request.method == 'POST':
         meumodelo.delete()
-        return redirect('index')
+        return redirect('table_admin')
 
     return render(
         request, 'delete_meumodelo_confirm.html', {'item': meumodelo}
