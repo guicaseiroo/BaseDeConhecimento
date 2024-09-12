@@ -15,10 +15,9 @@ class MeuModeloForm(forms.ModelForm):
 
     class Meta:
         model = MeuModelo
-        fields = '__all__'
+        fields = ['titulo', 'categorias', 'validade', 'texto']  # Não inclui 'usuario_criador'
 
     def __init__(self, *args, **kwargs):
         super(MeuModeloForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_method = 'post'
-        self.helper.add_input(Submit('submit', 'Próximo: Editar Texto'))

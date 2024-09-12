@@ -38,23 +38,19 @@ def create_meumodelo(request):
         form = MeuModeloForm(request.POST)
         
         if form.is_valid():
-            try:
-                # Salva os dados do formulário
-                novo_item = form.save(commit=False)
-                novo_item.usuario_criador = request.user
-                novo_item.save()
+            # Salva os dados do formulário sem submeter ao banco de dados
+            novo_item = form.save(commit=False)
+            
+            # Atribui o usuário autenticado como 'usuario_criador'
+            novo_item.usuario_criador = request.user
+            
+            # Salva no banco de dados
+            novo_item.save()
 
-                # Redireciona para a página 'table_admin' após o salvamento
-                return redirect('table_admin')
-            except Exception as e:
-                # Captura exceções inesperadas
-                print(f"Erro ao salvar o tópico: {e}")
-                messages.error(request, "Ocorreu um erro ao tentar salvar o tópico.")
+            # Redireciona para a página 'table_admin' após o salvamento
+            return redirect('table_admin')
         else:
-            # Se o formulário não for válido, exibe os erros no terminal
             print(f"Formulário inválido: {form.errors}")
-            messages.error(request, "Erro de validação. Por favor, corrija os erros abaixo.")
-    
     else:
         form = MeuModeloForm()
 
@@ -127,24 +123,3 @@ def ver_artigo(request, pk):
     return render(request, 'ver_artigos.html', {'artigo': artigo})
 
 
-@login_required
-def edit_texto(request, pk):
-    meumodelo = get_object_or_404(MeuModelo, pk=pk)
-
-    if request.method == 'POST':
-        form = MeuModeloForm(request.POST, instance=meumodelo)
-        if form.is_valid():
-            form.save()
-            return redirect('index')  # Redireciona após salvar
-    else:
-        form = MeuModeloForm(instance=meumodelo)
-        # Mantendo apenas o campo 'texto' no formulário
-        # Verificando se o campo 'texto' está presente no formulário
-        if 'texto' in form.fields:
-            form.fields = {'texto': form.fields['texto']}
-        else:
-            raise KeyError("Campo 'texto' não encontrado no formulário.")
-
-    return render(
-        request, 'edit_texto.html', {'form': form, 'item': meumodelo}
-    )

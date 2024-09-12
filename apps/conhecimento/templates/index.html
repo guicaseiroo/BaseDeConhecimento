@@ -45,13 +45,15 @@
                           <td>{{ item.data_created|date:'d/m/Y H:i' }}</td>
                           <td>{{ item.data_updated|date:'d/m/Y H:i' }}</td>
                           <td>
-                              <!-- Botões de ação -->
-                              <a href="{% url 'ver_artigo' item.id %}" class="btn btn-primary">Ver</a>
-                              <a href="{% url 'edit_meumodelo' item.id %}" class="btn btn-warning">Editar</a>
-                              <form action="{% url 'delete_meumodelo' item.id %}" method="POST" style="display:inline-block;">
-                                  {% csrf_token %}
-                                  <button type="submit" class="btn btn-danger">Excluir</button>
-                              </form>
+                              <!-- Botões de ação com flexbox -->
+                              <div class="d-flex">
+                                  <a href="{% url 'ver_artigo' item.id %}" class="btn btn-primary btn-sl me-1">Ver</a>
+                                  <a href="{% url 'edit_meumodelo' item.id %}" class="btn btn-warning btn-sl me-1">Editar</a>
+                                  <form action="{% url 'delete_meumodelo' item.id %}" method="POST" style="display:inline;">
+                                      {% csrf_token %}
+                                      <button type="submit" class="btn btn-danger btn-sl">Excluir</button>
+                                  </form>
+                              </div>
                           </td>
                       </tr>
                       {% endfor %}
@@ -64,7 +66,6 @@
 
 
   <!-- DataTables CDN -->
-  <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" /> -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 

@@ -20,6 +20,4 @@ urlpatterns = [
     # Visualizar artigo
     path('ver-artigo/<int:pk>/', views.ver_artigo, name='ver_artigo'),
     
-    # Editor de texto
-    path('editar-texto/<int:pk>/', views.edit_texto, name='edit_texto'),
 ]
