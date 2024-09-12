@@ -1,7 +1,6 @@
 {% for artigo in artigos %}
   <div class="blog-card{% cycle '' ' alt' %}">
       <div class="meta">
-        <div class="photo" style="background-image: url({% if artigo.imagem %}{{ artigo.imagem.url }}{% else %}https://via.placeholder.com/300x150{% endif %})"></div>
         <ul class="details">
           <li class="author"><a href="#">{{ artigo.usuario_criador }}</a></li>
           <li class="date">{{ artigo.data_created|date:"d/m/Y H:i" }}</li>

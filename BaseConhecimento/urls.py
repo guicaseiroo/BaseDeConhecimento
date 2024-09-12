@@ -6,4 +6,5 @@ urlpatterns = [
     path('auth/', include('users.urls')),
     path('', include('conhecimento.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('voice_assistant/', include('voice_assistant.urls')),
 ]
