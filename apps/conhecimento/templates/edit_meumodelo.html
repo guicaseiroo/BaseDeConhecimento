@@ -7,30 +7,73 @@
 {% endblock %}
 
 {% block content %}
-  <div class="row">
+<div class="row">
     <div class="col-xl-12 col-sm-12">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Editar Tópico: {{ item.titulo }}</h5>
-          <form method="POST">
-            {% csrf_token %}
-            {{ form|crispy }}  <!-- Usando Crispy Forms -->
-            <button type="submit" class="btn btn-warning">Salvar Alterações</button>
-            <a href="{% url 'table_admin' %}" class="btn btn-secondary">Cancelar</a>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-{% endblock %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Editar Tópico</h5>
+                
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <!-- Exibe erros gerais do formulário -->
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <ul>
+                                {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
 
-{% block extra_js %}
-<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
-<script>
-    ClassicEditor
-        .create(document.querySelector('#id_texto'))  // ID do campo de texto gerado pelo Django
-        .catch(error => {
-            console.error(error);
-        });
+                    <!-- Exibe os campos do formulário com erros específicos -->
+                    {{ form.titulo.errors }}
+                    {{ form.titulo|as_crispy_field }}
+
+                    {{ form.categorias.errors }}
+                    {{ form.categorias|as_crispy_field }}
+
+                    {{ form.validade.errors }}
+                    {{ form.validade|as_crispy_field }}
+                    
+                    <label for="id_texto">{{ form.texto.label_tag }}</label>
+                    <div class="form-group">
+                        {{ form.texto }}  <!-- Renderiza o campo do CKEditor -->
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <a href="{% url 'table_admin' %}" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="importmap">
+    {
+        "imports": {
+            "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.1.0/ckeditor5.js",
+            "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.1.0/"
+        }
+    }
 </script>
+
+<script type="module">
+    import { initializeCkEditor } from '/static/js/ckeditor_init.js';
+    initializeCkEditor('#id_texto');  // Inicia o CKEditor para o campo de texto
+</script>
+
+
+<!-- A friendly reminder to run on a server, remove this during the integration. -->
+<script>
+    window.onload = function() {
+        if (window.location.protocol === "file:") {
+            alert("This sample requires an HTTP server. Please serve this file with a web server.");
+        }
+    };
+</script>
+
 {% endblock %}

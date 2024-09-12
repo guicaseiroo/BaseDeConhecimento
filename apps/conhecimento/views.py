@@ -67,7 +67,7 @@ def edit_meumodelo(request, pk):
         if form.is_valid():
             form.save()  # Salva o formulário, atualizando o item
             return redirect(
-                'index'
+                'table_admin'
             )  # Redireciona para a página inicial após salvar
     else:
         form = MeuModeloForm(instance=meumodelo)
@@ -98,24 +98,31 @@ def view_meumodelo(request, pk):
 
 # Novas views para a visão de artigos
 
-
 def artigos(request):
-    # Renderiza a página principal de visualização dos artigos
-    artigos = MeuModelo.objects.all()
-    return render(request, 'artigos.html', {'artigos': artigos})
+    query = request.GET.get('busca', '')  # Captura o valor da searchbar
+    if query:
+        # Filtra artigos que contenham o termo de busca no título ou no texto
+        artigos = MeuModelo.objects.filter(
+            titulo__icontains=query
+        ) | MeuModelo.objects.filter(
+            texto__icontains=query
+        )
+    else:
+        # Se não houver busca, retorna todos os artigos
+        artigos = MeuModelo.objects.all()
+
+    return render(request, 'artigos.html', {'artigos': artigos, 'query': query})
 
 
 def buscar_artigos(request):
-    query = request.GET.get('query', '')
-    artigos = MeuModelo.objects.filter(
-        titulo__icontains=query
-    ) | MeuModelo.objects.filter(texto__icontains=query)
+    """Função que retorna artigos filtrados via HTMX"""
+    query = request.GET.get('busca', '')
+    if query:
+        artigos = MeuModelo.objects.filter(titulo__icontains=query) | MeuModelo.objects.filter(texto__icontains=query)
+    else:
+        artigos = MeuModelo.objects.all()
 
-    html = render_to_string(
-        'partials/artigos_cards.html', {'artigos': artigos}
-    )
-
-    return JsonResponse({'html': html})
+    return render(request, 'partials/artigos_cards.html', {'artigos': artigos})
 
 
 def ver_artigo(request, pk):

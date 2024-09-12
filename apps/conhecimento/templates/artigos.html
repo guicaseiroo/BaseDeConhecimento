@@ -6,9 +6,8 @@
 
 {% block content %}
 <style>
-  /* Espaçamento da navbar */
   .content-wrapper {
-    padding-top: 20px; /* Ajuste o valor conforme necessário */
+    padding-top: 0px;
   }
 
   .blog-card {
@@ -193,40 +192,73 @@
       transform: skew(3deg);
     }
   }
+
+  .search-bar-container {
+    margin-bottom: 20px;
+  }
+
+  .search-bar {
+    width: 100%;
+    max-width: 300px;
+    padding: 10px 20px;
+    border: 2px solid #ddd;
+    border-radius: 30px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .search-bar:focus {
+    border-color: #5ad67d;
+    outline: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .search-bar::placeholder {
+    color: #aaa;
+  }
+
 </style>
 
-<div class="search-bar">
-  <input type="text" id="busca" name="busca" placeholder="Buscar artigos..." 
-         hx-get="{% url 'buscar_artigos' %}" hx-trigger="keyup changed delay:500ms" 
-         hx-target="#artigos-cards" hx-swap="innerHTML">
-</div>
+<div class="search-bar-container">
+  <!-- Form de busca que submete a busca via GET -->
+  <form method="GET" action="{% url 'artigos' %}">
+    <input type="text" id="busca" name="busca" placeholder="Buscar artigos..." 
+           class="search-bar"
+           value="{{ query }}"> <!-- Mantém o valor na barra de busca após a pesquisa -->
+  </form>
+</div>  
 
 <div id="artigos-cards">
-  {% for artigo in artigos %}
-  <div class="blog-card{% cycle '' ' alt' %}">
-      <div class="meta">
-        <div class="photo" style="background-image: url({% if artigo.imagem %}{{ artigo.imagem.url }}{% else %}https://via.placeholder.com/300x150{% endif %})"></div>
-        <ul class="details">
-          <li class="author"><a href="#">{{ artigo.usuario_criador }}</a></li>
-          <li class="date">{{ artigo.data_created|date:"d/m/Y H:i" }}</li>
-          <li class="tags">
-            <ul>
-              {% for categoria in artigo.get_categorias %}
-                <li><a href="#">{{ categoria }}</a></li>
-              {% endfor %}
-            </ul>
-          </li>
-        </ul>
-      </div>
-      <div class="description">
-        <h1>{{ artigo.titulo }}</h1>
-        <h2>{{ artigo.subtitulo|default:"" }}</h2> <!-- Subtítulo se houver -->
-        <p>{{ artigo.texto|safe|truncatewords:30 }}</p> <!-- Renderização correta do HTML -->
-        <p class="read-more">
-          <a href="{% url 'ver_artigo' artigo.pk %}">Ver mais</a>
-        </p>
-      </div>
-  </div>
-  {% endfor %}
+  {% if artigos %}
+    {% for artigo in artigos %}
+    <div class="blog-card{% cycle '' ' alt' %}">
+        <div class="meta">
+          <div class="photo" style="background-image: url({% if artigo.imagem %}{{ artigo.imagem.url }}{% else %}https://via.placeholder.com/300x150{% endif %})"></div>
+          <ul class="details">
+            <li class="author"><a href="#">{{ artigo.usuario_criador }}</a></li>
+            <li class="date">{{ artigo.data_created|date:"d/m/Y H:i" }}</li>
+            <li class="tags">
+              <ul>
+                {% for categoria in artigo.get_categorias %}
+                  <li><a href="#">{{ categoria }}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="description">
+          <h1>{{ artigo.titulo }}</h1>
+          <h2>{{ artigo.subtitulo|default:"" }}</h2> <!-- Subtítulo se houver -->
+          <p>{{ artigo.texto|safe|truncatewords:30 }}</p> <!-- Renderiza o conteúdo do artigo truncado -->
+          <p class="read-more">
+            <a href="{% url 'ver_artigo' artigo.pk %}">Ver mais</a>
+          </p>
+        </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <p>Nenhum artigo encontrado com "{{ query }}".</p>
+  {% endif %}
 </div>
 {% endblock %}
