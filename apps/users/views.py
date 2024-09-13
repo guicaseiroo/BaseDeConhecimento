@@ -12,7 +12,7 @@ from .models import Users
 def login(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
-            return redirect(reverse('index'))
+            return redirect(reverse('artigos'))
         return render(request, 'login.html')
     elif request.method == 'POST':
         username = request.POST.get('username')
@@ -37,4 +37,4 @@ def login(request):
 def logout_sys(request):
     if request.user.is_authenticated:
         logout(request)
-        return redirect(reverse('index'))
+        return redirect(reverse('login'))

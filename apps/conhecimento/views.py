@@ -16,7 +16,7 @@ from .models import MeuModelo
 def Index(request):
     if request.method == 'GET':
         items = MeuModelo.objects.all()
-        return render(request, 'index.html', {'items': items})
+        return render(request, 'artigos.html', {'items': items})
 
 
 def data_ajax_url(request):
