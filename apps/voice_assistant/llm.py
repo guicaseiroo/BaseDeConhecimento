@@ -5,7 +5,7 @@ from sklearn.neighbors import NearestNeighbors
 import numpy as np
 from langchain_openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
-from langchain.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyPDFLoader
 from dotenv import load_dotenv
 from openai import OpenAI
 from conhecimento.models import MeuModelo
