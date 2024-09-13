@@ -14,7 +14,7 @@ from conhecimento.models import MeuModelo  # Certifique-se de importar seu model
 load_dotenv()
 
 # Configuração da API OpenAI
-openai_api_key = os.getenv("OPENAI_API_KEY")
+openai_api_key = os.getenv('OPENAI_API_KEY')
 client = OpenAI(api_key=openai_api_key)
 embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
 
