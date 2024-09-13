@@ -30,7 +30,7 @@ def login(request):
             )
 
         auth.login(request, user_validation)
-        return redirect(reverse('index'))
+        return redirect(reverse('artigos'))
 
 
 @login_required

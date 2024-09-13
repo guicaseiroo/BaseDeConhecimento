@@ -2,7 +2,7 @@
   <!-- Verifica se a URL atual é a dos artigos -->
   <li class="menu-item {% if request.path == '/' %}active{% endif %}">
     <a href="{% url 'artigos' %}" class="menu-link">
-      <i class="menu-icon tf-icons ti ti-smart-home"></i>
+      <i class="menu-icon tf-icons ti ti-news"></i>
       <div>Artigos</div>
     </a>
   </li>
@@ -11,17 +11,29 @@
   <!-- Verifica se a URL atual é a da visão admin -->
   <li class="menu-item {% if request.path == '/table-admin/' %}active{% endif %}">
     <a href="{% url 'table_admin' %}" class="menu-link">
-      <i class="menu-icon tf-icons ti ti-smart-home"></i>
+      <i class="menu-icon tf-icons ti ti-settings"></i>
       <div>Visão Admin</div>
     </a>
   </li>
   {% endif %}
 
   <!-- Verifica se a URL atual é a da inteligência artificial -->
-  <li class="menu-item {% if request.path == '/inteligencia-artificial/' %}active{% endif %}">
-    <a href="{% url 'table_admin' %}" class="menu-link">
-      <i class="menu-icon tf-icons ti ti-smart-home"></i>
-      <div>Inteligência Artificial</div>
+  <li class="menu-item {% if request.path == '/voice_assistant/2' %}active{% endif %}">
+    <a href="{% url 'index2' %}" class="menu-link">
+      <i class="menu-icon tf-icons ti ti-ai"></i>
+      <div>IA - Chat</div>
+    </a>
+  </li>
+  <li class="menu-item {% if request.path == '/voice_assistant/1' %}active{% endif %}">
+    <a href="{% url 'index1' %}" class="menu-link">
+      <i class="menu-icon tf-icons ti ti-ai"></i>
+      <div>IA - Escuta 100% ativa</div>
+    </a>
+  </li>
+  <li class="menu-item {% if request.path == '/voice_assistant/3' %}active{% endif %}">
+    <a href="{% url 'index3' %}" class="menu-link">
+      <i class="menu-icon tf-icons ti ti-ai"></i>
+      <div>IA - Controle de Voz</div>
     </a>
   </li>
 </ul>
