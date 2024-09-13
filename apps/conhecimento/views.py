@@ -99,7 +99,7 @@ def view_meumodelo(request, pk):
 
 # Novas views para a visão de artigos
 
-
+@login_required
 def artigos(request):
     query = request.GET.get('busca', '')  # Captura o valor da searchbar
     if query:
@@ -115,7 +115,7 @@ def artigos(request):
         request, 'artigos.html', {'artigos': artigos, 'query': query}
     )
 
-
+@login_required
 def buscar_artigos(request):
     """Função que retorna artigos filtrados via HTMX"""
     query = request.GET.get('busca', '')
@@ -128,7 +128,7 @@ def buscar_artigos(request):
 
     return render(request, 'partials/artigos_cards.html', {'artigos': artigos})
 
-
+@login_required
 def ver_artigo(request, pk):
     artigo = get_object_or_404(MeuModelo, pk=pk)
     return render(request, 'ver_artigos.html', {'artigo': artigo})
